@@ -4,8 +4,6 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
-import java.util.List;
-
 /**
  * Gateway service contract.
  *
@@ -17,5 +15,5 @@ public interface GatewayService {
 
   void getPhoneRecord(String user, Handler<AsyncResult<JsonObject>> resultHandler);
 
-  void getAllPhoneRecords(Handler<AsyncResult<List<JsonObject>>> resultHandler);
+  void getAllPhoneRecords(Handler<AsyncResult<JsonObject>> resultHandler);
 }

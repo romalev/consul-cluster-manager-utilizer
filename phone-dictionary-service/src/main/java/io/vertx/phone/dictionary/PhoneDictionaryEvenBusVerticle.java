@@ -41,14 +41,28 @@ public class PhoneDictionaryEvenBusVerticle extends AbstractVerticle {
     vertx.eventBus().consumer(GET_PHONE_NUMBER_CHANNEL_NAME, event -> {
       if (event.body() instanceof String) {
         String user = (String) event.body();
-
+        phoneDictionaryService.getPhoneRecord(user, resultHandler -> {
+          if (resultHandler.succeeded()) {
+            event.reply(resultHandler.result());
+          } else {
+            log.warn("{} failed to execute.", GET_PHONE_NUMBER_CHANNEL_NAME, resultHandler.cause());
+            event.reply(new JsonObject().put("error", resultHandler.cause()));
+          }
+        });
       } else {
         log.trace("{} not a type of String.", event.body().toString());
       }
     });
 
     vertx.eventBus().consumer(GET_ALL_PHONE_RECORDS_CHANNEL_NAME, event -> {
-
+      phoneDictionaryService.getAllPhoneRecords(resultHandler -> {
+        if (resultHandler.succeeded()) {
+          event.reply(resultHandler.result());
+        } else {
+          log.warn("{} failed to execute.", GET_ALL_PHONE_RECORDS_CHANNEL_NAME, resultHandler.cause());
+          event.reply(new JsonObject().put("error", resultHandler.cause()));
+        }
+      });
     });
 
     startFuture.complete();

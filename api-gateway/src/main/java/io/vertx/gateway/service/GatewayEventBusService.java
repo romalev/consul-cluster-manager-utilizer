@@ -6,8 +6,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
-import java.util.List;
-
 /**
  * Gateway event bus based service implementation.
  *
@@ -34,7 +32,7 @@ public class GatewayEventBusService implements GatewayService {
   public void getPhoneRecord(String user, Handler<AsyncResult<JsonObject>> resultHandler) {
     vertx.eventBus().send(GET_PHONE_NUMBER_CHANNEL_NAME, user, event -> {
       if (event.succeeded()) {
-        JsonObject reply = (JsonObject) event.result();
+        JsonObject reply = (JsonObject) event.result().body();
         resultHandler.handle(Future.succeededFuture(reply));
       } else {
         resultHandler.handle(Future.failedFuture(event.cause()));
@@ -43,11 +41,11 @@ public class GatewayEventBusService implements GatewayService {
   }
 
   @Override
-  public void getAllPhoneRecords(Handler<AsyncResult<List<JsonObject>>> resultHandler) {
+  public void getAllPhoneRecords(Handler<AsyncResult<JsonObject>> resultHandler) {
     vertx.eventBus().send(GET_ALL_PHONE_RECORDS_CHANNEL_NAME, "", event -> {
       if (event.succeeded()) {
-        List<JsonObject> all = (List<JsonObject>) event.result();
-        resultHandler.handle(Future.succeededFuture(all));
+        final JsonObject result = (JsonObject) event.result().body();
+        resultHandler.handle(Future.succeededFuture(result));
       } else {
         resultHandler.handle(Future.failedFuture(event.cause()));
       }

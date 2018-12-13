@@ -7,8 +7,6 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -57,13 +55,10 @@ public class PhoneDictionaryEventBusService implements PhoneDictionaryService {
   }
 
   @Override
-  public void getAllPhoneRecords(Handler<AsyncResult<List<JsonObject>>> resultHandler) {
-    final List<JsonObject> allRecords = new ArrayList<>();
-    inMemoryPhoneDictionary.forEach((k, v) ->
-      allRecords.add(new JsonObject()
-        .put(USER_KEY, k)
-        .put(PHONE_NUMBER_KEY, v)));
-    log.debug("All phone records are fetched: {}", allRecords);
-    resultHandler.handle(Future.succeededFuture(allRecords));
+  public void getAllPhoneRecords(Handler<AsyncResult<JsonObject>> resultHandler) {
+    JsonObject result = new JsonObject();
+    inMemoryPhoneDictionary.forEach(result::put);
+    log.debug("All phone records are fetched: {}", result);
+    resultHandler.handle(Future.succeededFuture(result));
   }
 }
