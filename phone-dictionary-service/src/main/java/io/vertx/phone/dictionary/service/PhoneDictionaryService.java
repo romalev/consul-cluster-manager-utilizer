@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface PhoneDictionaryService {
 
-    void savePhoneRecord(JsonObject phoneRecord, Handler<AsyncResult<Void>> resultHandler);
+  void savePhoneRecord(JsonObject phoneRecord, Handler<AsyncResult<Void>> resultHandler);
 
-    void getPhoneRecord(String user, Handler<AsyncResult<JsonObject>> resultHandler);
+  void getPhoneRecord(String user, Handler<AsyncResult<JsonObject>> resultHandler);
 
-    void getAllPhoneRecords(Handler<AsyncResult<List<JsonObject>>> resultHandler);
+  void getAllPhoneRecords(Handler<AsyncResult<List<JsonObject>>> resultHandler);
 }
