@@ -7,6 +7,16 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+jar {
+  manifest {
+    attributes "Main-Class": "io.vertx.gateway.GatewayLauncher"
+  }
+
+  from {
+    configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+}
+
 repositories {
   mavenCentral()
   maven { url 'https://jitpack.io' }
