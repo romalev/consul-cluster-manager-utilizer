@@ -8,6 +8,10 @@ This is a simple project intended to show how to use [consul - based cluster man
 - **phone-dictionary-service**: utilizes event-bus to accept incoming messages from **api-gateway** and handle them apppropriately.
 
 **How to use**
+- 
+**api-gateway** and **phone-dictionary-service** contain two shell scripts: 
+- ```./docker-rebuild-service.sh``` - to (re) build the docker image of the service.
+- ```./docker-restart-service.sh``` - to (re) start the docker image of the service.
 
--to be done.
+Execute ```./docker-run-dev-consul.sh``` to boot **consul agent** (in dev mode). 
 
