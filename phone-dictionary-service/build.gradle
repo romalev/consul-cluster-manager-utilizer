@@ -1,11 +1,39 @@
-plugins {
-  id 'java'
-}
-
 group 'io.vertx'
 version '1.0-SNAPSHOT'
 
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+    jcenter()
+    mavenCentral()
+    dependencies {
+      classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'docker'
+
 sourceCompatibility = 1.8
+
+// builds docker image and packages it within tar file, later on this tar file can be loaded by docker demon into docker images and it can be ran.
+// note : docker has be installed on the machine where given task is to be executed.
+task buildDocker(type: Docker) {
+  baseImage = 'frolvlad/alpine-oraclejdk8:slim'
+  push = false
+  tag = 'io.vertx.phone.directory'
+  addFile {
+    from jar
+    rename { 'phone-directory.jar' }
+  }
+  // enabling jvm native memory tracking will cause 5-10% performance overhead!!!
+  entryPoint(['java', '-XX:NativeMemoryTracking=summary', '-Djava.security.egd=file:/dev/./urandom', '-jar', '/phone-directory.jar'])
+}
+buildDocker.dependsOn(build)
 
 jar {
   manifest {
